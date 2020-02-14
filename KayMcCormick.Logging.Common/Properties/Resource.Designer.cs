@@ -59,5 +59,14 @@ namespace KayMcCormick.Logging.Common.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to *** Starting logger configuration..
+        /// </summary>
+        internal static string AppLoggingConfigHelper_ConfigureLogging_____Starting_logger_configuration_ {
+            get {
+                return ResourceManager.GetString("AppLoggingConfigHelper_ConfigureLogging_____Starting_logger_configuration_", resourceCulture);
+            }
+        }
     }
 }
