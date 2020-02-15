@@ -35,7 +35,8 @@ namespace KayMcCormick.Logging.Common
         private const string JsonTargetName = "json_out" ;
 
         // ReSharper disable once InconsistentNaming
-        [ UsedImplicitly ] private static Logger Logger ;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        [UsedImplicitly ] private static Logger Logger ;
 
         [ ThreadStatic ]
         private static int ? _numTimesConfigured ;
@@ -117,7 +118,7 @@ namespace KayMcCormick.Logging.Common
                 {
                     fieldInfo.SetValue ( null , proxiedFactory ) ;
                     var newVal = fieldInfo.GetValue ( null ) ;
-                    logMethod ( $"NewVal = {newVal}" ) ;
+                    logMethod ( $"New Value = {newVal}" ) ;
                 }
             }
 
@@ -146,7 +147,7 @@ namespace KayMcCormick.Logging.Common
             #endregion
             #region Chainsaw Target
             var chainsawTarget = new ChainsawTarget ( ) ;
-            SetupNetworkTarget ( chainsawTarget , "udp://192.168.10.1:4445" ) ;
+            SetupNetworkTarget ( chainsawTarget , "udp://xx1.mynetgear.com:4445") ;
             t.Add ( chainsawTarget ) ;
             #endregion
             t.Add ( MyFileTarget ( ) ) ;
