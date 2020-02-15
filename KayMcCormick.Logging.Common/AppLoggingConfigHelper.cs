@@ -80,6 +80,7 @@ namespace KayMcCormick.Logging.Common
         }
 
         // ReSharper disable once MemberCanBePrivate.Global
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling")]
         internal static void ConfigureLogging (
             LogDelegates.LogMethod logMethod
           , bool                   proxyLogging = false
