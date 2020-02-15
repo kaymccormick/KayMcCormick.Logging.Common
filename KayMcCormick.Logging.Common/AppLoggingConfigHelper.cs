@@ -115,9 +115,9 @@ namespace KayMcCormick.Logging.Common
 
                 if (proxyLogging)
                 {
-                    fieldInfo.SetValue(null, proxiedFactory);
-                    var newVal = fieldInfo.GetValue(null);
-                    logMethod($"New Value = {newVal}");
+                    fieldInfo.SetValue ( null , proxiedFactory ) ;
+                    var newVal = fieldInfo.GetValue ( null ) ;
+                    logMethod ( $"New Value = {newVal}" ) ;
                 }
             }
 
@@ -160,9 +160,9 @@ namespace KayMcCormick.Logging.Common
             }
             #endregion
             #region Chainsaw Target
-            var chainsawTarget = new ChainsawTarget();
-            SetupNetworkTarget(chainsawTarget, "udp://xx1.mynetgear.com:4445");
-            t.Add(chainsawTarget);
+            var chainsawTarget = new ChainsawTarget ( ) ;
+            SetupNetworkTarget ( chainsawTarget , "udp://xx1.mynetgear.com:4445") ;
+            t.Add ( chainsawTarget ) ;
             #endregion
             t.Add(MyFileTarget());
             var jsonFileTarget = JsonFileTarget();
