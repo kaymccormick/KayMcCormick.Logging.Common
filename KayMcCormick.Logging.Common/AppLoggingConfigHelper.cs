@@ -455,7 +455,7 @@ namespace KayMcCormick.Logging.Common
 #pragma warning disable IDE0060 // Remove unused parameter
         private static void Debug ( string s ) { }
 #pragma warning restore IDE0060 // Remove unused parameter
-
+        #region Target Methods
         /// <summary>Adds the supplied target to the current NLog configuration.</summary>
         /// <param name="target">The target.</param>
         /// <param name="minLevel"></param>
@@ -483,7 +483,7 @@ namespace KayMcCormick.Logging.Common
             LogManager.Configuration.RemoveTarget ( name ) ;
             LogManager.Configuration.LogFactory.ReconfigExistingLoggers ( ) ;
         }
-
+        #endregion
         /// <summary>Set up a <seealso cref="NLog.Layouts.JsonLayout"/> for json loggers.</summary>
         /// <returns>Configured JSON layout</returns>
         public static JsonLayout SetupJsonLayout ( )
