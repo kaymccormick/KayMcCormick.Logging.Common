@@ -35,7 +35,10 @@ namespace KayMcCormick.Logging.Common
         private const string JsonTargetName = "json_out";
 
         // ReSharper disable once InconsistentNaming
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+                                                              "Microsoft.Performance"
+                                                            , "CA1823:AvoidUnusedPrivateFields"
+                                                          )]
         [UsedImplicitly] private static Logger Logger;
 
         [ThreadStatic]
@@ -81,7 +84,10 @@ namespace KayMcCormick.Logging.Common
         }
 
         // ReSharper disable once MemberCanBePrivate.Global
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+                                                              "Microsoft.Maintainability"
+                                                            , "CA1506:AvoidExcessiveClassCoupling"
+                                                          )]
         internal static void ConfigureLogging(
             LogDelegates.LogMethod logMethod
           , bool proxyLogging = false
@@ -127,9 +133,9 @@ namespace KayMcCormick.Logging.Common
 
 
             var dict = LogLevel.AllLoggingLevels.ToDictionary(
-                                                    level => level
-                                                  , level => new List<Target>()
-                                                   );
+                                                               level => level
+                                                             , level => new List<Target>()
+                                                              );
             var errorTargets = dict[LogLevel.Error];
             var t = dict[LogLevel.Trace];
             var x = new EventLogTarget("eventLog");
@@ -163,11 +169,10 @@ namespace KayMcCormick.Logging.Common
             t.Add(MyFileTarget());
             var jsonFileTarget = JsonFileTarget();
             t.Add(jsonFileTarget);
-            
             var byType = new Dictionary<Type, int>();
-            foreach (var target in t) {}
+
+            foreach (var target in dict.SelectMany(pair => pair.Value))
             {
-                // logMethod ( $"target is {target}" ) ;
                 var type = target.GetType();
                 byType.TryGetValue(type, out var count);
                 count += 1;
@@ -178,16 +183,23 @@ namespace KayMcCormick.Logging.Common
                     target.Name = $"{Regex.Replace(type.Name, "Target", "")}{count:D2}";
                 }
 
-                lConf.AddTarget(
-                                 target
-                                ); //new AsyncTargetWrapper(target.Name + "AsyncWrapper", target)) ;
+                lConf.AddTarget(target);
             }
 
-            var loggingRules = t.AsQueryable().AsEnumerable().Select(DefaultLoggingRule);
-            foreach (var loggingRule in loggingRules) { lConf.LoggingRules.Add(loggingRule); }
+            foreach (var result in dict.Select(LoggingRule))
+            {
+                lConf.LoggingRules.Add(result);
+            }
 
             LogManager.Configuration = lConf;
             Logger = LogManager.GetCurrentClassLogger();
+        }
+
+        private static IEnumerable<LoggingRule> LoggingRule(
+            KeyValuePair<LogLevel, List<Target>> arg
+        )
+        {
+            return arg.Value.Select(target => new LoggingRule("*", arg.Key, target));
         }
 
         private static LoggingRule DefaultLoggingRule(Target target)
@@ -501,6 +513,7 @@ namespace KayMcCormick.Logging.Common
             LogManager.Configuration.LogFactory.ReconfigExistingLoggers();
         }
         #endregion
+
         /// <summary>Set up a <seealso cref="NLog.Layouts.JsonLayout"/> for json loggers.</summary>
         /// <returns>Configured JSON layout</returns>
         public static JsonLayout SetupJsonLayout()
@@ -517,9 +530,12 @@ namespace KayMcCormick.Logging.Common
 
             var l = new JsonLayout
             {
-                IncludeGdc = true,
-                IncludeMdlc = true,
-                IncludeAllProperties = true,
+                IncludeGdc = true
+                      ,
+                IncludeMdlc = true
+                      ,
+                IncludeAllProperties = true
+                      ,
                 MaxRecursionLimit = 3
             };
             l.Attributes.AddRange(
