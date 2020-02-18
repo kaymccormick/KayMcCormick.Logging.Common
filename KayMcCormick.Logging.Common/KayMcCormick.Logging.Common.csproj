@@ -89,6 +89,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="RegConfigSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\NLog\src\NLog\NLog.csproj">
