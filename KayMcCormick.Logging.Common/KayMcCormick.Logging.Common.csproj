@@ -10,7 +10,7 @@
     <BinOutputDir Condition=" '$(BinOutputDir)' == '' ">bin\$(Platform)\$(Configuration)\</BinOutputDir>
     <OutputPath>$(BinOutputDir)</OutputPath>
     <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
-    <ProjectGuid>{56485A47-262B-4BB0-B282-5978CF5524FE}</ProjectGuid>
+    <ProjectGuid>{122608B7-60D4-4182-A670-E8BE067C4F88}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
