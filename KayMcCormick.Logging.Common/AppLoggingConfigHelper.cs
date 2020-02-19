@@ -138,7 +138,7 @@ namespace KayMcCormick.Logging.Common
             errorTargets.Add(x);
 
             var webServiceTarget = new LogReceiverWebServiceTarget("log");
-            webServiceTarget.EndpointAddress = "http://serenity/LogService/ReceiveLogs.svc" ;// "http://localhost:27809/ReceiveLogs.svc";
+            webServiceTarget.EndpointAddress = "http://xx1.mynetgear.com/LogService/ReceiveLogs.svc" ;// "http://localhost:27809/ReceiveLogs.svc";
             // webServiceTarget.EndpointConfigurationName = "log";
             dict[LogLevel.Debug].Add(webServiceTarget);
 
