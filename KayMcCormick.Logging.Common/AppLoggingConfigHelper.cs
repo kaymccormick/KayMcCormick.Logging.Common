@@ -138,7 +138,7 @@ namespace KayMcCormick.Logging.Common
                                                               );
             var errorTargets = dict[LogLevel.Error];
             var t = dict[LogLevel.Trace];
-            var x = new EventLogTarget("eventLog");
+            var x = new EventLogTarget("eventLog") { Source = "Application Error" };
             errorTargets.Add(x);
 
 
