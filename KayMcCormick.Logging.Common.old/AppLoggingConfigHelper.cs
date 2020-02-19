@@ -8,7 +8,9 @@ using System.Runtime.CompilerServices ;
 using System.Text ;
 using System.Text.RegularExpressions ;
 using Castle.DynamicProxy ;
+using DynamicData ;
 using JetBrains.Annotations ;
+using KayMcCormick.Logging.Common.Properties ;
 using NLog ;
 using NLog.Common ;
 using NLog.Config ;
@@ -85,10 +87,10 @@ namespace KayMcCormick.Logging.Common
           , bool                   proxyLogging = false
         )
         {
-            // logMethod (
-                       // Resource
-                          // .AppLoggingConfigHelper_ConfigureLogging_____Starting_logger_configuration_
-                      // ) ;
+            logMethod (
+                       Resource
+                          .AppLoggingConfigHelper_ConfigureLogging_____Starting_logger_configuration_
+                      ) ;
             InternalLogging ( ) ;
 
             LogFactory proxiedFactory = null ;
@@ -497,20 +499,18 @@ namespace KayMcCormick.Logging.Common
 
 
             var l = new JsonLayout { IncludeAllProperties = true , MaxRecursionLimit = 3 } ;
-            foreach ( var jsonAttribute in atts.Select (
-                                                        tuple => new JsonAttribute (
-                                                                                    tuple.Item1
-                                                                                  , Layout
-                                                                                       .FromString (
-                                                                                                    tuple
-                                                                                                       .Item2
-                                                                                                    ?? $"${{{tuple.Item1}}}"
-                                                                                                   )
-                                                                                   )
-                                                       ) )
-            {
-                l.Attributes.Add ( jsonAttribute ) ;
-            }
+            l.Attributes.AddRange (
+                                   atts.Select (
+                                                tuple => new JsonAttribute (
+                                                                            tuple.Item1
+                                                                          , Layout.FromString (
+                                                                                               tuple
+                                                                                                  .Item2
+                                                                                               ?? $"${{{tuple.Item1}}}"
+                                                                                              )
+                                                                           )
+                                               )
+                                  ) ;
 
             return l ;
         }
