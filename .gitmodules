@@ -1,0 +1,3 @@
+[submodule "KayMcCormick.Test.Common"]
+	path = KayMcCormick.Test.Common
+	url = https://kaymccormick@dev.azure.com/kaymccormick/KayMcCormick.Test.Common/_git/KayMcCormick.Test.Common
