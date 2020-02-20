@@ -121,14 +121,13 @@ namespace KayMcCormick.Logging.Common
                 }
             }
 
-            var useFactory = proxyLogging ? proxiedFactory : LogManager.LogFactory;
-            var lConf = new CodeConfiguration(useFactory);
-
+            // var useFactory = proxyLogging ? proxiedFactory : LogManager.LogFactory;
+            var lConf = new CodeConfiguration();
 
             var dict = LogLevel.AllLoggingLevels.ToDictionary(
-                                                               level => level
-                                                             , level => new List<Target>()
-                                                              );
+                                                              level => level
+                                                            , level => new List<Target>()
+                                                             );
             var errorTargets = dict[LogLevel.Error];
             var t = dict[LogLevel.Trace];
             // var x = new EventLogTarget("eventLog") { Source = "Application Error" };
@@ -187,7 +186,7 @@ namespace KayMcCormick.Logging.Common
 
             foreach (var result in dict.Select(LoggingRule))
             {
-                lConf.LoggingRules.Add(result);
+                ((List<LoggingRule>)lConf.LoggingRules).AddRange(result);
             }
 
             LogManager.Configuration = lConf;
@@ -232,8 +231,11 @@ namespace KayMcCormick.Logging.Common
             return new NLogViewerTarget(name)
             {
                 Address = new SimpleLayout("udp://10.25.0.102:9999")
-                     ,
+                     
+                      #if false
+               ,
                 IncludeAllProperties = true
+#endif
                      ,
                 IncludeCallSite = true
                      ,
@@ -289,7 +291,7 @@ namespace KayMcCormick.Logging.Common
             }
 
             LogManager.Configuration.RemoveTarget(target.Name);
-            LogManager.LogFactory.ReconfigExistingLoggers();
+            LogManager.ReconfigExistingLoggers();
 #if LOGREMOVAL
             Logger.Debug ( "Removing target " + target ) ;
             foreach ( var t in LogManager.Configuration.AllTargets )
@@ -334,47 +336,49 @@ namespace KayMcCormick.Logging.Common
                       );
 
 
-            var fieldInfo2 = LogManager.LogFactory.GetType()
-                                       .GetField(
-                                                  "_config"
-                                                , BindingFlags.Instance | BindingFlags.NonPublic
-                                                 );
-
-            if (fieldInfo2 == null)
+            var f = typeof ( LogManager ).GetField (
+                                                    "factory"
+                                                  , BindingFlags.Static | BindingFlags.NonPublic
+                                                   ) ;
+            bool configLoaded = false ;
+            if(f != null)
             {
-                System.Diagnostics.Debug.WriteLine(
-                                                    "no field _configLoaded for "
-                                                    + LogManager.LogFactory
-                                                   );
-                // throw new Exception ( Resources.AppLoggingConfigHelper_EnsureLoggingConfigured_no_config_loaded_field_found ) ;
-            }
-
-            if (fieldInfo2 != null)
-            {
-                var config = fieldInfo2.GetValue(LogManager.LogFactory);
-
-                //LogManager.ThrowConfigExceptions = true;
-                //LogManager.ThrowExceptions = true;
-                var fieldInfo = LogManager.LogFactory.GetType()
-                                          .GetField(
-                                                     "_configLoaded"
+                LogFactory fc = ( LogFactory ) f.GetValue ( null ) ;
+                var fieldInfo2 = fc.GetType()
+                                           .GetField(
+                                                     "_config"
                                                    , BindingFlags.Instance | BindingFlags.NonPublic
                                                     );
 
-                bool configLoaded;
-                if (fieldInfo == null)
+                if ( fieldInfo2 == null )
                 {
-                    configLoaded = config != null;
-
-                    System.Diagnostics.Debug.WriteLine(
-                                                        "no field _configLoaded for "
-                                                        + LogManager.LogFactory
-                                                       );
-                    // throw new Exception ( "no config loaded field found" ) ;
+                    System.Diagnostics.Debug.WriteLine ( "no field _config for " + fc ) ;
+                    // throw new Exception ( Resources.AppLoggingConfigHelper_EnsureLoggingConfigured_no_config_loaded_field_found ) ;
                 }
-                else
+
+                if ( fieldInfo2 != null )
                 {
-                    configLoaded = (bool)fieldInfo.GetValue(LogManager.LogFactory);
+                    var config = fieldInfo2.GetValue ( fc ) ;
+
+                    //LogManager.ThrowConfigExceptions = true;
+                    //LogManager.ThrowExceptions = true;
+                    var fieldInfo = fc.GetType ( )
+                                      .GetField (
+                                                 "_configLoaded"
+                                               , BindingFlags.Instance | BindingFlags.NonPublic
+                                                ) ;
+
+                    if ( fieldInfo == null )
+                    {
+                        configLoaded = config != null ;
+
+                        System.Diagnostics.Debug.WriteLine ( "no field _configLoaded for " + fc ) ;
+                        // throw new Exception ( "no config loaded field found" ) ;
+                    }
+                    else
+                    {
+                        configLoaded = ( bool ) fieldInfo.GetValue ( fc ) ;
+                    }
                 }
 
                 LoggingIsConfigured = configLoaded;
@@ -454,6 +458,7 @@ namespace KayMcCormick.Logging.Common
 
         private static void DumpPossibleConfig(LoggingConfiguration configuration)
         {
+            #if false
             var candidateConfigFilePaths = LogManager.LogFactory.GetCandidateConfigFilePaths();
             foreach (var q in candidateConfigFilePaths)
             {
@@ -476,6 +481,7 @@ namespace KayMcCormick.Logging.Common
             }
 
             Debug($"{configuration}");
+#endif
         }
 
 
@@ -527,6 +533,7 @@ namespace KayMcCormick.Logging.Common
 
             var l = new JsonLayout
             {
+                #if false
                 IncludeGdc = true
                       ,
                 IncludeMdlc = true
@@ -534,6 +541,7 @@ namespace KayMcCormick.Logging.Common
                 IncludeAllProperties = true
                       ,
                 MaxRecursionLimit = 3
+#endif
             };
             foreach ( var jsonAttribute in atts.Select (
                                                         tuple => new JsonAttribute (
