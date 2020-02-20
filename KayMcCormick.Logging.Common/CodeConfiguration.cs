@@ -1,5 +1,4 @@
-﻿using NLog ;
-using NLog.Config ;
+﻿using NLog.Config ;
 
 namespace KayMcCormick.Logging.Common
 {
@@ -16,10 +15,5 @@ namespace KayMcCormick.Logging.Common
         // ReSharper disable once UnusedMember.Global
         public CodeConfiguration ( ) { }
 
-        /// <summary>
-        ///     Initializes a new instance of the
-        ///     <see cref="NLog.Config.LoggingConfiguration" /> class.
-        /// </summary>
-        public CodeConfiguration ( LogFactory logFactory ) : base ( logFactory ) { }
     }
 }
