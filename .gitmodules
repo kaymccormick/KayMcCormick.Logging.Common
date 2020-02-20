@@ -1,4 +1,4 @@
 [submodule "KayMcCormick.Test.Common"]
 	path = KayMcCormick.Test.Common
-	url = https://github.com/kaymccormick/KayMcCormick.Test.Common.git
+	url = https://kaymccormick@dev.azure.com/kaymccormick/KayMcCormick.Test.Common/_git/KayMcCormick.Test.Common
 	branch = netcoreapp3.1
