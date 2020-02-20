@@ -131,11 +131,11 @@ namespace KayMcCormick.Logging.Common
                                                               );
             var errorTargets = dict[LogLevel.Error];
             var t = dict[LogLevel.Trace];
-            var x = new EventLogTarget("eventLog") { Source = "Application Error" };
-            errorTargets.Add(x);
+            // var x = new EventLogTarget("eventLog") { Source = "Application Error" };
+            // errorTargets.Add(x);
 
             var webServiceTarget = new LogReceiverWebServiceTarget("log");
-            webServiceTarget.EndpointAddress = "http://xx1.mynetgear.com/LogService/ReceiveLogs.svc" ;// "http://localhost:27809/ReceiveLogs.svc";
+            webServiceTarget.EndpointAddress = "http://xx1.mynetgear.com/LogService/ReceiveLogs.svc";// "http://localhost:27809/ReceiveLogs.svc";
             // webServiceTarget.EndpointConfigurationName = "log";
             dict[LogLevel.Debug].Add(webServiceTarget);
 
