@@ -1,21 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Text.RegularExpressions;
-using Castle.DynamicProxy;
-using DynamicData;
-using JetBrains.Annotations;
-using KayMcCormick.Logging.Common.Properties;
-using NLog;
-using NLog.Common;
-using NLog.Config;
-using NLog.Layouts;
-using NLog.Targets;
+using System ;
+using System.Collections.Generic ;
+using System.Diagnostics ;
+using System.IO ;
+using System.Linq ;
+using System.Reflection ;
+using System.Runtime.CompilerServices ;
+using System.Text ;
+using System.Text.RegularExpressions ;
+using Castle.DynamicProxy ;
+using JetBrains.Annotations ;
+using NLog ;
+using NLog.Common ;
+using NLog.Config ;
+using NLog.Layouts ;
+using NLog.Targets ;
 
 namespace KayMcCormick.Logging.Common
 {
@@ -89,11 +87,10 @@ namespace KayMcCormick.Logging.Common
           , bool proxyLogging = false
         )
         {
-            logMethod(
-                       Resource
-                          .AppLoggingConfigHelper_ConfigureLogging_____Starting_logger_configuration_
-                      );
-            InternalLogging();
+            // logMethod (
+                       // Resource
+                          // .AppLoggingConfigHelper_ConfigureLogging_____Starting_logger_configuration_
+                      // ) ;
 
             LogFactory proxiedFactory = null;
             if (proxyLogging)
@@ -529,7 +526,6 @@ namespace KayMcCormick.Logging.Common
                          , Tuple.Create ( "exception" , "${exception}" )
                        };
 
-
             var l = new JsonLayout
             {
                 IncludeGdc = true
@@ -540,19 +536,20 @@ namespace KayMcCormick.Logging.Common
                       ,
                 MaxRecursionLimit = 3
             };
-            l.Attributes.AddRange(
-                                   atts.Select(
-                                                tuple => new JsonAttribute(
-                                                                            tuple.Item1
-                                                                          , Layout.FromString(
-                                                                                               tuple
-                                                                                                  .Item2
-                                                                                               ?? $"${{{tuple.Item1}}}"
-                                                                                              )
-                                                                           )
-                                               )
-                                  );
-
+            foreach ( var jsonAttribute in atts.Select (
+                                                        tuple => new JsonAttribute (
+                                                                                    tuple.Item1
+                                                                                  , Layout
+                                                                                       .FromString (
+                                                                                                    tuple
+                                                                                                       .Item2
+                                                                                                    ?? $"${{{tuple.Item1}}}"
+                                                                                                   )
+                                                                                   )
+                                                       ) )
+            {
+                l.Attributes.Add ( jsonAttribute ) ;
+            }
             return l;
         }
     }
