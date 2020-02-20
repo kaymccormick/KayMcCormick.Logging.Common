@@ -20,6 +20,6 @@ namespace KayMcCormick.Logging.Common
         ///     Initializes a new instance of the
         ///     <see cref="NLog.Config.LoggingConfiguration" /> class.
         /// </summary>
-        public CodeConfiguration ( LogFactory logFactory ) : base ( logFactory ) { }
+        public CodeConfiguration ( LogFactory logFactory ) : base () { }
     }
 }

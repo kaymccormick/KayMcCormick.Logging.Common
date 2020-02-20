@@ -499,8 +499,7 @@ namespace KayMcCormick.Logging.Common
             LogManager.Configuration.AddTarget(target);
 
             LogManager.Configuration.AddRule(minLevel, LogLevel.Fatal, target);
-
-            LogManager.LogFactory.ReconfigExistingLoggers();
+            LogManager.ReconfigExistingLoggers();
         }
 
         /// <summary>Removes a target by name from the current NLog configuration.</summary>
@@ -509,7 +508,7 @@ namespace KayMcCormick.Logging.Common
         public static void RemoveTarget(string name)
         {
             LogManager.Configuration.RemoveTarget(name);
-            LogManager.Configuration.LogFactory.ReconfigExistingLoggers();
+            LogManager.ReconfigExistingLoggers();
         }
         #endregion
 

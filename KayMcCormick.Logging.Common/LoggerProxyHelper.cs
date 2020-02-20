@@ -50,7 +50,7 @@ namespace KayMcCormick.Logging.Common
         {
             if ( logFactory == null )
             {
-                logFactory = LogManager.LogFactory ;
+                // logFactory = LogManager.LogFactory ;
             }
 
             var opts = new ProxyGenerationOptions ( new LoggerFactoryHook ( UseLogMethod ) ) ;
@@ -68,7 +68,7 @@ namespace KayMcCormick.Logging.Common
                                                                             ) ;
             return proxy ;
         }
-
+        #if false
         /// <summary>Gets the current class logger.</summary>
         /// <param name="path">The path.</param>
         /// <returns></returns>
@@ -100,5 +100,6 @@ namespace KayMcCormick.Logging.Common
             var logger = myLogFactory.GetLogger ( name ) ;
             return logger ;
         }
+#endif
     }
 }
